@@ -11,8 +11,11 @@ CLASS zcx_error DEFINITION
 ************************************************************************
   PUBLIC SECTION.
 
-    INTERFACES if_t100_dyn_msg.
-    INTERFACES if_t100_message.
+    CONSTANTS c_version TYPE string VALUE '1.0.0' ##NEEDED.
+
+    INTERFACES:
+      if_t100_dyn_msg,
+      if_t100_message.
 
     CLASS-DATA null TYPE string.
 
@@ -26,13 +29,13 @@ CLASS zcx_error DEFINITION
         !msgv4    TYPE symsgv OPTIONAL.
 
     "! Raise exception with text
-    "! @parameter iv_text | Text
-    "! @parameter ix_previous | Previous exception
+    "! @parameter text | Text
+    "! @parameter previous | Previous exception
     "! @raising zcx_error | Exception
     CLASS-METHODS raise
       IMPORTING
-        !iv_text     TYPE clike
-        !ix_previous TYPE REF TO cx_root OPTIONAL
+        !text     TYPE clike
+        !previous TYPE REF TO cx_root OPTIONAL
       RAISING
         zcx_error.
 
@@ -40,32 +43,32 @@ CLASS zcx_error DEFINITION
     "! <p>
     "! Will default to sy-msg* variables. These need to be set right before calling this method.
     "! </p>
-    "! @parameter iv_msgid | Message ID
-    "! @parameter iv_msgno | Message number
-    "! @parameter iv_msgv1 | Message variable 1
-    "! @parameter iv_msgv2 | Message variable 2
-    "! @parameter iv_msgv3 | Message variable 3
-    "! @parameter iv_msgv4 | Message variable 4
-    "! @parameter ix_previous | Previous exception
+    "! @parameter msgid | Message ID
+    "! @parameter msgno | Message number
+    "! @parameter msgv1 | Message variable 1
+    "! @parameter msgv2 | Message variable 2
+    "! @parameter msgv3 | Message variable 3
+    "! @parameter msgv4 | Message variable 4
+    "! @parameter previous | Previous exception
     "! @raising zcx_error | Exception
     CLASS-METHODS raise_t100
       IMPORTING
-        VALUE(iv_msgid) TYPE symsgid DEFAULT sy-msgid
-        VALUE(iv_msgno) TYPE symsgno DEFAULT sy-msgno
-        VALUE(iv_msgv1) TYPE symsgv DEFAULT sy-msgv1
-        VALUE(iv_msgv2) TYPE symsgv DEFAULT sy-msgv2
-        VALUE(iv_msgv3) TYPE symsgv DEFAULT sy-msgv3
-        VALUE(iv_msgv4) TYPE symsgv DEFAULT sy-msgv4
-        !ix_previous    TYPE REF TO cx_root OPTIONAL
+        VALUE(msgid) TYPE symsgid DEFAULT sy-msgid
+        VALUE(msgno) TYPE symsgno DEFAULT sy-msgno
+        VALUE(msgv1) TYPE symsgv DEFAULT sy-msgv1
+        VALUE(msgv2) TYPE symsgv DEFAULT sy-msgv2
+        VALUE(msgv3) TYPE symsgv DEFAULT sy-msgv3
+        VALUE(msgv4) TYPE symsgv DEFAULT sy-msgv4
+        !previous    TYPE REF TO cx_root OPTIONAL
       RAISING
         zcx_error.
 
     "! Raise with text from previous exception
-    "! @parameter ix_previous | Previous exception
+    "! @parameter previous | Previous exception
     "! @raising zcx_error | Exception
     CLASS-METHODS raise_with_text
       IMPORTING
-        !ix_previous TYPE REF TO cx_root
+        !previous TYPE REF TO cx_root
       RAISING
         zcx_error.
 
@@ -76,9 +79,9 @@ CLASS zcx_error DEFINITION
 
     CLASS-METHODS split_text_to_symsg
       IMPORTING
-        !iv_text      TYPE string
+        !text         TYPE string
       RETURNING
-        VALUE(rs_msg) TYPE symsg.
+        VALUE(result) TYPE symsg.
 
 ENDCLASS.
 
@@ -109,47 +112,41 @@ CLASS zcx_error IMPLEMENTATION.
 
   METHOD raise.
 
-    DATA:
-      lv_text TYPE string,
-      ls_msg  TYPE symsg.
-
-    IF iv_text IS INITIAL.
-      lv_text = c_generic_error_msg.
+    IF text IS INITIAL.
+      DATA(msg) = split_text_to_symsg( c_generic_error_msg ).
     ELSE.
-      lv_text = iv_text.
+      msg = split_text_to_symsg( text ).
     ENDIF.
 
-    ls_msg = split_text_to_symsg( lv_text ).
-
     " Set syst variables using generic error message
-    MESSAGE e001(00) WITH ls_msg-msgv1 ls_msg-msgv2 ls_msg-msgv3 ls_msg-msgv4 INTO null.
+    MESSAGE e001(00) WITH msg-msgv1 msg-msgv2 msg-msgv3 msg-msgv4 INTO null.
 
-    raise_t100( ix_previous = ix_previous ).
+    raise_t100( previous = previous ).
 
   ENDMETHOD.
 
 
   METHOD raise_t100.
 
-    DATA ls_t100_key TYPE scx_t100key.
+    DATA t100_key TYPE scx_t100key.
 
-    IF iv_msgid IS NOT INITIAL.
-      ls_t100_key-msgid = iv_msgid.
-      ls_t100_key-msgno = iv_msgno.
-      ls_t100_key-attr1 = 'IF_T100_DYN_MSG~MSGV1'.
-      ls_t100_key-attr2 = 'IF_T100_DYN_MSG~MSGV2'.
-      ls_t100_key-attr3 = 'IF_T100_DYN_MSG~MSGV3'.
-      ls_t100_key-attr4 = 'IF_T100_DYN_MSG~MSGV4'.
+    IF msgid IS NOT INITIAL.
+      t100_key-msgid = msgid.
+      t100_key-msgno = msgno.
+      t100_key-attr1 = 'IF_T100_DYN_MSG~MSGV1'.
+      t100_key-attr2 = 'IF_T100_DYN_MSG~MSGV2'.
+      t100_key-attr3 = 'IF_T100_DYN_MSG~MSGV3'.
+      t100_key-attr4 = 'IF_T100_DYN_MSG~MSGV4'.
     ENDIF.
 
     RAISE EXCEPTION TYPE zcx_error
       EXPORTING
-        textid   = ls_t100_key
-        msgv1    = iv_msgv1
-        msgv2    = iv_msgv2
-        msgv3    = iv_msgv3
-        msgv4    = iv_msgv4
-        previous = ix_previous.
+        textid   = t100_key
+        msgv1    = msgv1
+        msgv2    = msgv2
+        msgv3    = msgv3
+        msgv4    = msgv4
+        previous = previous.
 
   ENDMETHOD.
 
@@ -157,8 +154,8 @@ CLASS zcx_error IMPLEMENTATION.
   METHOD raise_with_text.
 
     raise(
-      iv_text     = ix_previous->get_text( )
-      ix_previous = ix_previous ).
+      text     = previous->get_text( )
+      previous = previous ).
 
   ENDMETHOD.
 
@@ -166,48 +163,46 @@ CLASS zcx_error IMPLEMENTATION.
   METHOD split_text_to_symsg.
 
     CONSTANTS:
-      lc_length_of_msgv           TYPE i VALUE 50,
-      lc_offset_of_last_character TYPE i VALUE 49.
+      c_length_of_msgv           TYPE i VALUE 50,
+      c_offset_of_last_character TYPE i VALUE 49.
 
     DATA:
-      lv_text    TYPE c LENGTH 200,
-      lv_rest    TYPE c LENGTH 200,
-      lv_msg_var TYPE c LENGTH lc_length_of_msgv,
-      lv_index   TYPE sy-index.
+      msg_text TYPE c LENGTH 200,
+      rest     TYPE c LENGTH 200,
+      msg_var  TYPE c LENGTH c_length_of_msgv,
+      index    TYPE sy-index.
 
-    lv_text = iv_text.
+    msg_text = text.
 
     DO 4 TIMES.
-
-      lv_index = sy-index.
+      index = sy-index.
 
       CALL FUNCTION 'TEXT_SPLIT'
         EXPORTING
-          length = lc_length_of_msgv
-          text   = lv_text
+          length = c_length_of_msgv
+          text   = msg_text
         IMPORTING
-          line   = lv_msg_var
-          rest   = lv_rest.
+          line   = msg_var
+          rest   = rest.
 
-      IF lv_msg_var+lc_offset_of_last_character(1) = space OR lv_text+lc_length_of_msgv(1) = space.
+      IF msg_var+c_offset_of_last_character(1) = space OR msg_text+c_length_of_msgv(1) = space.
         " keep the space at the beginning of the rest
         " because otherwise it's lost
-        lv_rest = | { lv_rest }|.
+        rest = | { rest }|.
       ENDIF.
 
-      lv_text = lv_rest.
+      msg_text = rest.
 
-      CASE lv_index.
+      CASE index.
         WHEN 1.
-          rs_msg-msgv1 = lv_msg_var.
+          result-msgv1 = msg_var.
         WHEN 2.
-          rs_msg-msgv2 = lv_msg_var.
+          result-msgv2 = msg_var.
         WHEN 3.
-          rs_msg-msgv3 = lv_msg_var.
+          result-msgv3 = msg_var.
         WHEN 4.
-          rs_msg-msgv4 = lv_msg_var.
+          result-msgv4 = msg_var.
       ENDCASE.
-
     ENDDO.
 
   ENDMETHOD.
