@@ -77,12 +77,6 @@ CLASS zcx_error DEFINITION
 
     CONSTANTS c_generic_error_msg TYPE string VALUE `An error occured`.
 
-    CLASS-METHODS split_text_to_symsg
-      IMPORTING
-        !text         TYPE string
-      RETURNING
-        VALUE(result) TYPE symsg.
-
 ENDCLASS.
 
 
@@ -113,13 +107,10 @@ CLASS zcx_error IMPLEMENTATION.
   METHOD raise.
 
     IF text IS INITIAL.
-      DATA(msg) = split_text_to_symsg( c_generic_error_msg ).
+      cl_message_helper=>set_msg_vars_for_clike( c_generic_error_msg ).
     ELSE.
-      msg = split_text_to_symsg( text ).
+      cl_message_helper=>set_msg_vars_for_clike( text ).
     ENDIF.
-
-    " Set syst variables using generic error message
-    MESSAGE e001(00) WITH msg-msgv1 msg-msgv2 msg-msgv3 msg-msgv4 INTO null.
 
     raise_t100( previous = previous ).
 
@@ -156,58 +147,6 @@ CLASS zcx_error IMPLEMENTATION.
     raise(
       text     = previous->get_text( )
       previous = previous ).
-
-  ENDMETHOD.
-
-
-  METHOD split_text_to_symsg.
-
-    CONSTANTS:
-      c_length_of_msgv           TYPE i VALUE 50,
-      c_max_length_of_text       TYPE i VALUE 200,
-      c_offset_of_last_character TYPE i VALUE 49.
-
-    TYPES:
-      ty_msgv TYPE c LENGTH c_length_of_msgv,
-      ty_text TYPE c LENGTH c_max_length_of_text.
-
-    DATA:
-      msg_var TYPE ty_msgv,
-      rest    TYPE ty_text.
-
-    " Note: Texts longer than 200 characters truncated
-    DATA(msg_text) = CONV ty_text( text ).
-
-    DO 4 TIMES.
-      DATA(index) = sy-index.
-
-      CALL FUNCTION 'TEXT_SPLIT'
-        EXPORTING
-          length = c_length_of_msgv
-          text   = msg_text
-        IMPORTING
-          line   = msg_var
-          rest   = rest.
-
-      IF msg_var+c_offset_of_last_character(1) = space OR msg_text+c_length_of_msgv(1) = space.
-        " keep the space at the beginning of the rest
-        " because otherwise it's lost
-        rest = | { rest }|.
-      ENDIF.
-
-      msg_text = rest.
-
-      CASE index.
-        WHEN 1.
-          result-msgv1 = msg_var.
-        WHEN 2.
-          result-msgv2 = msg_var.
-        WHEN 3.
-          result-msgv3 = msg_var.
-        WHEN 4.
-          result-msgv4 = msg_var.
-      ENDCASE.
-    ENDDO.
 
   ENDMETHOD.
 ENDCLASS.
