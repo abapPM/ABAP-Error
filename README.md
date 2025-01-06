@@ -12,15 +12,44 @@ NO WARRANTIES, [MIT License](https://github.com/abapPM/ABAP-Error/blob/main/LICE
 
 ## Usage
 
-...
+Raise exception with free form text:
+
+```abap
+zcx_error=>raise( 'Not found' ).
+```
+
+Raise exception with reference to another exception:
+
+```abap
+TRY.
+    "... some code that raises an exception
+  CATCH cx_root INTO DATA(error).
+    zcx_error=>raise_with_text( error ).
+    " or
+    zcx_error=>raise(
+      text     = 'Overwrite error text'
+      previous = error ).
+ENDTRY.
+```
+
+Raise exception with T100 system message:
+
+```abap
+MESSAGE e001(00) WITH 'error value' 'more text' INTO zcx_error=>null. " or any other message
+zcx_error=>raise_t100( ).
+```
 
 ## Prerequisites
 
-SAP Basis 7.40 or higher
+SAP Basis 7.50 or higher
 
 ## Installation
 
-Import ABAP Error to your project using [apm](https://abappm.com).
+Install the `error` module in your system using [apm](https://abappm.com).
+
+## Import
+
+Specify the `error` module as a dependency in your project and import it to your namespace using [apm](https://abappm.com).
 
 ```abap
 IMPORT '*' TO 'z$1_your_project$2' FROM 'error'.
