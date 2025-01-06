@@ -1,0 +1,41 @@
+{
+  "name": "error",
+  "version": "1.0.0",
+  "description": "General purpose exception class",
+  "keywords": [
+    "abap",
+    "apm",
+    "error",
+    "exception",
+    "sap"
+  ],
+  "homepage": "https://abappm.com",
+  "bugs": {
+    "url": "https://github.com/abapPM/ABAP-Error/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Marc Bernard",
+    "url": "https://github.com/mbtools",
+    "email": "marc@abappm.com"
+  },
+  "maintainers": [
+    {
+      "name": "Marc Bernard",
+      "url": "https://github.com/mbtools",
+      "email": "marc@abappm.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abapPM/ABAP-Error.git"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/abappm"
+  },
+  "engines": {
+    "abap": ">=7.50",
+    "apm": ">=1"
+  }
+}
