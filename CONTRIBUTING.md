@@ -1,6 +1,6 @@
 # Contributing to apm
 
-apm welcomes your suggestions and contributions! Before opening your first issue or pull request, please review our [Code of Conduct](CODE_OF_CONDUCT.md) to understand how our community interacts in an inclusive and respectful manner.
+apm welcomes your suggestions and contributions! Before opening your first issue or pull request, please review our [Code of Conduct](https://github.com/abapPM/.github/blob/main/CODE_OF_CONDUCT.md) to understand how our community interacts in an inclusive and respectful manner.
 
 ## General Advice
 
@@ -32,7 +32,9 @@ A good bug report should not leave others needing to chase you up for more infor
 
 ### Compatibility
 
-apm is targeted for SAP Basis 7.40 and higher, so the code should only contain expressions and statements that work on 7.40. abaplint will automatically check every pull request for language syntax that is not available on these releases.
+apm is targeted for SAP Basis 7.50 and higher, so the code should only contain expressions and statements that work on 7.50. abaplint will automatically check every pull request for language syntax that is not available on these releases.
+
+Lower releases might be supported using an automated downport.
 
 ### Linting
 
@@ -44,7 +46,7 @@ Use pretty printer, keywords upper case + indentation.
 
 ### Prefixing
 
-Variables are prefixed using the standard setting in [abapOpenChecks](http://docs.abapopenchecks.org/checks/69/) naming conventions.
+apm does not use prefixing (hungarian notation) of variable names.
 
 ### Internationalization (I18N)
 
