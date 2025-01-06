@@ -63,7 +63,7 @@ All contributions are welcome! Read our [Contribution Guidelines](https://github
 
 You can install the developer version of ABAP Error using [abapGit](https://github.com/abapGit/abapGit) either by creating a new online repository for https://github.com/abapPM/ABAP-Error.
 
-Recommended SAP package: `$error`
+Recommended SAP package: `$ERROR`
 
 ## About
 
@@ -71,4 +71,4 @@ Made with ❤️ in Canada
 
 Copyright 2024 apm.to Inc. <https://apm.to>
 
-Follow [@marcfbe](https://twitter.com/marcfbe) on X/Twitter or [marcfbe](https://linkedin.com/in/marcfbe) or LinkedIn
+Follow [@marcf.be](https://bsky.app/profile/marcf.be) on Blueksy
