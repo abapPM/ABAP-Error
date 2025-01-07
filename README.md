@@ -45,9 +45,9 @@ SAP Basis 7.50 or higher
 
 ## Installation
 
-Install the `error` module in your system using [apm](https://abappm.com).
+Install `error` as a global module in your system using [apm](https://abappm.com).
 
-## Import
+or
 
 Specify the `error` module as a dependency in your project and import it to your namespace using [apm](https://abappm.com).
 
