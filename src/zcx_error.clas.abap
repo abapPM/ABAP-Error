@@ -17,7 +17,8 @@ CLASS zcx_error DEFINITION
       if_t100_dyn_msg,
       if_t100_message.
 
-    " Used for MESSAGE ... INTO null
+    "! Black Hole
+    "! Can be used for MESSAGE ... INTO null
     CLASS-DATA null TYPE string ##NEEDED.
 
     DATA longtext TYPE string READ-ONLY.
