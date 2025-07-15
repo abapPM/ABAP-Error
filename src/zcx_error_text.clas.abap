@@ -3,6 +3,12 @@ CLASS zcx_error_text DEFINITION
   INHERITING FROM zcx_error_t100
   CREATE PUBLIC.
 
+************************************************************************
+* Text Error
+*
+* Copyright 2024 apm.to Inc. <https://apm.to>
+* SPDX-License-Identifier: MIT
+************************************************************************
   PUBLIC SECTION.
 
     METHODS constructor

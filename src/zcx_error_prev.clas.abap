@@ -3,12 +3,19 @@ CLASS zcx_error_prev DEFINITION
   INHERITING FROM zcx_error_text
   CREATE PUBLIC.
 
+************************************************************************
+* Previous Error
+*
+* Copyright 2024 apm.to Inc. <https://apm.to>
+* SPDX-License-Identifier: MIT
+************************************************************************
   PUBLIC SECTION.
 
     METHODS constructor
       IMPORTING
         !previous LIKE previous
         !longtext TYPE csequence OPTIONAL.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.

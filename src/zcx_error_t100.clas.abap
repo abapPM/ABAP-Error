@@ -3,6 +3,12 @@ CLASS zcx_error_t100 DEFINITION
   INHERITING FROM zcx_error
   CREATE PUBLIC.
 
+************************************************************************
+* Message Error
+*
+* Copyright 2024 apm.to Inc. <https://apm.to>
+* SPDX-License-Identifier: MIT
+************************************************************************
   PUBLIC SECTION.
 
     METHODS constructor
@@ -15,6 +21,7 @@ CLASS zcx_error_t100 DEFINITION
         !msgv4    TYPE symsgv DEFAULT sy-msgv4
         !previous TYPE REF TO cx_root OPTIONAL
         !longtext TYPE csequence OPTIONAL.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
