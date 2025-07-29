@@ -42,7 +42,7 @@ Raise an exception with T100 system message:
 MESSAGE e001(00) WITH 'error value' 'more text' INTO /apmg/cx_error=>null. " or any other message
 
 RAISE EXCEPTION TYPE /apmg/cx_error_t100.
-" ok
+" or
 /apmg/cx_error=>raise_t100( ).
 ```
 
