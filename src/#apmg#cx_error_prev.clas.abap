@@ -1,6 +1,6 @@
-CLASS zcx_error_prev DEFINITION
+CLASS /apmg/cx_error_prev DEFINITION
   PUBLIC
-  INHERITING FROM zcx_error_text
+  INHERITING FROM /apmg/cx_error_text
   CREATE PUBLIC.
 
 ************************************************************************
@@ -22,7 +22,7 @@ ENDCLASS.
 
 
 
-CLASS zcx_error_prev IMPLEMENTATION.
+CLASS /apmg/cx_error_prev IMPLEMENTATION.
 
 
   METHOD constructor ##ADT_SUPPRESS_GENERATION.

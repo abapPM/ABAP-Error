@@ -1,6 +1,6 @@
-CLASS zcx_error_text DEFINITION
+CLASS /apmg/cx_error_text DEFINITION
   PUBLIC
-  INHERITING FROM zcx_error_t100
+  INHERITING FROM /apmg/cx_error_t100
   CREATE PUBLIC.
 
 ************************************************************************
@@ -23,7 +23,7 @@ ENDCLASS.
 
 
 
-CLASS zcx_error_text IMPLEMENTATION.
+CLASS /apmg/cx_error_text IMPLEMENTATION.
 
 
   METHOD constructor ##ADT_SUPPRESS_GENERATION.
