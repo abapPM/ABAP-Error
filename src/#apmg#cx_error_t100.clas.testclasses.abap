@@ -1,4 +1,4 @@
-CLASS ltcx_error_t100 DEFINITION FOR TESTING
+CLASS ltcl_error_t100 DEFINITION FOR TESTING
   RISK LEVEL HARMLESS
   DURATION SHORT FINAL.
 
@@ -7,17 +7,16 @@ CLASS ltcx_error_t100 DEFINITION FOR TESTING
 
 ENDCLASS.
 
-CLASS ltcx_error_t100 IMPLEMENTATION.
+CLASS ltcl_error_t100 IMPLEMENTATION.
 
   METHOD test.
 
     TRY.
         MESSAGE i000(oo) WITH 'Hello,' 'World!'.
         RAISE EXCEPTION TYPE /apmg/cx_error_t100.
-        cl_abap_unit_assert=>fail( ).
-      CATCH /apmg/cx_error INTO DATA(lx_error).
+      CATCH /apmg/cx_error INTO DATA(error).
         cl_abap_unit_assert=>assert_equals(
-          act = lx_error->get_text( )
+          act = error->get_text( )
           exp = 'Hello, World!' ).
     ENDTRY.
 
