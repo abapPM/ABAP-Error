@@ -1,4 +1,4 @@
-CLASS zcx_error DEFINITION
+CLASS /apmg/cx_error DEFINITION
   PUBLIC
   INHERITING FROM cx_static_check
   CREATE PUBLIC.
@@ -46,14 +46,14 @@ CLASS zcx_error DEFINITION
     "! @parameter text | Text
     "! @parameter previous | Previous exception
     "! @parameter longtext | Longtext
-    "! @raising zcx_error | Exception
+    "! @raising /apmg/cx_error | Exception
     CLASS-METHODS raise
       IMPORTING
         !text     TYPE clike
         !previous TYPE REF TO cx_root OPTIONAL
         !longtext TYPE csequence OPTIONAL
       RAISING
-        zcx_error.
+        /apmg/cx_error.
 
     "! Raise exception with T100 message
     "! <p>
@@ -67,7 +67,7 @@ CLASS zcx_error DEFINITION
     "! @parameter msgv4 | Message variable 4
     "! @parameter previous | Previous exception
     "! @parameter longtext | Longtext
-    "! @raising zcx_error | Exception
+    "! @raising /apmg/cx_error | Exception
     CLASS-METHODS raise_t100
       IMPORTING
         msgid     TYPE symsgid DEFAULT sy-msgid
@@ -79,18 +79,18 @@ CLASS zcx_error DEFINITION
         !previous TYPE REF TO cx_root OPTIONAL
         !longtext TYPE csequence OPTIONAL
       RAISING
-        zcx_error.
+        /apmg/cx_error.
 
     "! Raise with text from previous exception
     "! @parameter previous | Previous exception
     "! @parameter longtext | Longtext
-    "! @raising zcx_error | Exception
+    "! @raising /apmg/cx_error | Exception
     CLASS-METHODS raise_with_text
       IMPORTING
         !previous TYPE REF TO cx_root
         !longtext TYPE csequence OPTIONAL
       RAISING
-        zcx_error.
+        /apmg/cx_error.
 
     METHODS get_source_position REDEFINITION.
     METHODS if_message~get_longtext REDEFINITION.
@@ -110,7 +110,7 @@ ENDCLASS.
 
 
 
-CLASS zcx_error IMPLEMENTATION.
+CLASS /apmg/cx_error IMPLEMENTATION.
 
 
   METHOD constructor ##ADT_SUPPRESS_GENERATION.
@@ -251,7 +251,7 @@ CLASS zcx_error IMPLEMENTATION.
         attr4 = 'IF_T100_DYN_MSG~MSGV4' ).
     ENDIF.
 
-    RAISE EXCEPTION TYPE zcx_error
+    RAISE EXCEPTION TYPE /apmg/cx_error
       EXPORTING
         textid   = t100_key
         msgv1    = msgv1

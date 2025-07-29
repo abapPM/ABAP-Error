@@ -15,10 +15,10 @@ CLASS ltcx_error_prev IMPLEMENTATION.
         TRY.
             DATA(i) = 1 / 0.
           CATCH cx_root INTO DATA(previous).
-            RAISE EXCEPTION TYPE zcx_error_prev EXPORTING previous = previous.
+            RAISE EXCEPTION TYPE /apmg/cx_error_prev EXPORTING previous = previous.
         ENDTRY.
         cl_abap_unit_assert=>fail( ).
-      CATCH zcx_error INTO DATA(error).
+      CATCH /apmg/cx_error INTO DATA(error).
         cl_abap_unit_assert=>assert_equals(
           act = error->get_text( )
           exp = 'Division by zero' ).
