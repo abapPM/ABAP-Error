@@ -2,7 +2,7 @@
   "name": "error",
   "version": "1.0.0",
   "description": "General purpose exception class",
-  "type": "module",  
+  "type": "module",
   "keywords": [
     "abap",
     "apm",
