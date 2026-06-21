@@ -26,7 +26,7 @@ Raise an exception concerning another exception:
 TRY.
     "... some code that raises an exception
   CATCH cx_root INTO DATA(error).
-    RAISE EXCEPTION TYPE /apmg/cx_error_prev EXPORTING previous = previous. 
+    RAISE EXCEPTION TYPE /apmg/cx_error_prev EXPORTING previous = error. 
     " or
     /apmg/cx_error=>raise_with_text( error ).
     " or
